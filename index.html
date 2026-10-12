@@ -401,6 +401,74 @@
             font-size: 1rem;
         }
 
+        /* Mobile & Tablet Ultra-Responsive Enhancements */
+        @media(max-width: 768px) {
+            header {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            .brand-container {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .brand-text h1 {
+                font-size: 1.1rem;
+            }
+            .user-nav {
+                justify-content: center;
+                width: 100%;
+                gap: 6px;
+            }
+            .user-nav .btn {
+                padding: 6px 10px;
+                font-size: 0.78rem;
+            }
+            .container {
+                padding: 0 10px;
+                margin: 12px auto;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .stat-card {
+                padding: 12px;
+            }
+            .stat-info .num {
+                font-size: 1.4rem;
+            }
+            .filter-bar {
+                padding: 10px;
+                gap: 10px;
+            }
+            .filter-group {
+                width: 100%;
+            }
+            .filter-group select, .filter-group input {
+                width: 100%;
+            }
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 16px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Printable Media Query */
         @media print {
             body * { visibility: hidden; }
             #printArea, #printArea * { visibility: visible; }
@@ -1091,7 +1159,7 @@
                             p.change_type === 'progress_updated' ? '<span style="background: #0284c7; color: white; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; margin-right: 6px; font-weight: bold;"><i class="fa-solid fa-arrow-up"></i> تم تحديث النسبة</span>' : ''
                         ) : ''}
                     </td>
-                    <td>${p.governorate}</td>
+                    <td><span style="color: #64748b;">${p.region}</span> - <strong>${p.governorate}</strong></td>
                     <td style="font-size: 0.8rem; color: #334155;">${p.donor}</td>
                     <td style="text-align: center; font-weight: 600;">${p.budget}</td>
                     <td>
@@ -1153,7 +1221,6 @@
                 document.getElementById('authBtn').classList.remove('btn-light');
                 document.getElementById('authBtn').classList.add('btn-danger');
                 document.getElementById('authBtn').onclick = handleLogout;
-                
                 if (currentUser.role === 'admin') {
                     document.getElementById('editPermissionNote').innerHTML = `<span style="color: #10b981; font-weight: bold;"><i class="fa-solid fa-shield-halved"></i> حساب إدارة عليا (${currentUser.name}) - كامل الصلاحيات (إضافة، تعديل، طباعة التقارير الرسمية)</span>`;
                 } else {
@@ -1177,6 +1244,7 @@
             showToast('تم تسجيل الخروج بنجاح');
         }
 
+        // Add Project Modal & Logic
         function openAddModal() {
             if (!currentUser) {
                 showToast('عفواً، إضافة المشاريع تتطلب تسجيل الدخول بحساب مسؤول المنطقة أو الإدارة.');
@@ -1261,6 +1329,7 @@
             showToast(`تمت إضافة المشروع رقم (${newId}) وبثه سحابياً للجميع مباشرة.`);
         }
 
+        // Edit Modal & Logic
         function openEditModal(projId) {
             const proj = projects.find(p => p.id === projId);
             if (!proj) return;
@@ -1347,6 +1416,8 @@
             }, 3500);
         }
 
+        // Full Monthly Report Export (CSV / Excel Compatible UTF-8 with BOM)
+        
         function printOfficialReport() {
             if (!currentUser || currentUser.role !== 'admin') {
                 showToast('عفواً، طباعة التقرير الشهري الرسمي محصورة بالإدارة العليا (م. فادي محمود / رئيس وحدة الهندسة / مدير الأبنية).');
@@ -1469,6 +1540,15 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             showToast('تم تصدير التقرير الشهري الكامل بنجاح.');
+        }
+
+        function exportDataToExcel() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('عفواً، تحميل سجل الإكسل الكامل محصور بالإدارة العليا.');
+                if (!currentUser) openLoginModal();
+                return;
+            }
+            window.location.href = 'سجل_مشاريع_الصحة_2026_حصريا.xlsx';
         }
 
         window.onload = initApp;
