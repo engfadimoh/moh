@@ -401,7 +401,6 @@
             font-size: 1rem;
         }
 
-        /* Printable Media Query */
         @media print {
             body * { visibility: hidden; }
             #printArea, #printArea * { visibility: visible; }
@@ -553,7 +552,7 @@
                         <tr>
                             <th style="width: 40px; text-align: center;">م</th>
                             <th>اسم المشروع والمنشأة</th>
-                            <th>المنطقة / المحافظة</th>
+                            <th>المحافظة</th>
                             <th>الجهة المانحة</th>
                             <th>الموازنة</th>
                             <th style="width: 160px;">نسبة الإنجاز الفعلية</th>
@@ -563,7 +562,7 @@
                         </tr>
                     </thead>
                     <tbody id="projectsTbody">
-                        <!-- Populated by JavaScript -->
+                        <!-- Rendered by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -597,9 +596,8 @@
             </button>
             <div style="margin-top: 15px; font-size: 0.78rem; color: #64748b; line-height: 1.5; background: #f1f5f9; padding: 10px; border-radius: 8px;">
                 <strong>حسابات النظام المسجلة:</strong><br>
-                • م. فادي محمود: <code>fadi@2026</code> (صلاحية كاملة وإدارة عليا)<br>
-                • مسؤول وحدة الهندسة / مدير الأبنية: <code>admin@eng2026</code> / <code>bldg@2026</code><br>
-                • مسؤول الشمال: <code>north@2026</code> | الوسط: <code>center@2026</code> | الجنوب: <code>south@2026</code>
+                • الإدارة العليا (صلاحية كاملة + تقارير): <code>fadi@2026</code> / <code>admin@eng2026</code> / <code>bldg@2026</code><br>
+                • مسؤولو المناطق (إضافة وتعديل منطقتهم فقط): <code>north@2026</code> | <code>center@2026</code> | <code>south@2026</code>
             </div>
         </div>
     </div>
@@ -708,7 +706,7 @@
     <div id="printReportModal" class="modal">
         <div class="modal-content" style="max-width: 950px; width: 95%; max-height: 94vh; padding: 25px;">
             <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
-                <span style="font-weight: bold; color: #1e3a8a;"><i class="fa-solid fa-file-pdf"></i> معاينة التقرير الشهري الرسمي للطباعة</span>
+                <span style="font-weight: bold; color: #1e3a8a;"><i class="fa-solid fa-file-pdf"></i> معاينة التقرير الشهري الرسمي للطباعة (إدارة عليا)</span>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <button class="btn btn-primary" onclick="window.print()" style="background: #1e3a8a;">
                         <i class="fa-solid fa-print"></i> أمر الطباعة / حفظ كـ PDF
@@ -727,7 +725,7 @@
                     </h3>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 0.82rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: #f8fafc; padding: 10px 14px; border-radius: 6px; border: 1px solid #cbd5e1; font-size: 0.82rem;">
                     <div>
                         <strong>تاريخ التقرير: </strong><span id="printDate"></span><br>
                         <strong>إعداد النظام والمتابعة: </strong><span>م. فادي محمود (2026)</span>
@@ -738,6 +736,11 @@
                         <strong>قيد العمل: </strong><span id="printOngCount" style="color: #0284c7; font-weight: bold;"></span> | 
                         <strong>متوقف: </strong><span id="printStopCount" style="color: #ef4444; font-weight: bold;"></span>
                     </div>
+                </div>
+
+                <!-- Monthly Changes Tracker Bar -->
+                <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-start; margin-bottom: 12px; font-size: 0.8rem;" id="printChangesBox">
+                    <!-- Populated dynamically -->
                 </div>
 
                 <div style="max-height: 480px; overflow-y: auto; border: 1px solid #cbd5e1; border-radius: 6px;">
@@ -751,6 +754,7 @@
                                 <th style="padding: 7px; text-align: center;">الموازنة</th>
                                 <th style="padding: 7px; text-align: center;">نسبة الإنجاز</th>
                                 <th style="padding: 7px; text-align: center;">الحالة</th>
+                                <th style="padding: 7px; text-align: center; width: 140px;">مستجدات الشهر الحالي</th>
                             </tr>
                         </thead>
                         <tbody id="printTableBody">
@@ -1079,8 +1083,15 @@
 
                 tr.innerHTML = `
                     <td style="text-align: center; font-weight: bold; color: #64748b;">${p.id}</td>
-                    <td style="font-weight: 600;">${p.name}</td>
-                    <td><span style="color: #64748b;">${p.region}</span> - <strong>${p.governorate}</strong></td>
+                    <td style="font-weight: 600;">
+                        ${p.name}
+                        ${(p.change_month === new Date().toISOString().slice(0, 7)) ? (
+                            p.change_type === 'new' ? '<span style="background: #f59e0b; color: white; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; margin-right: 6px; font-weight: bold;"><i class="fa-solid fa-star"></i> جديد</span>' :
+                            p.change_type === 'completed_now' ? '<span style="background: #10b981; color: white; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; margin-right: 6px; font-weight: bold;"><i class="fa-solid fa-check"></i> اكتمل حديثاً</span>' :
+                            p.change_type === 'progress_updated' ? '<span style="background: #0284c7; color: white; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; margin-right: 6px; font-weight: bold;"><i class="fa-solid fa-arrow-up"></i> تم تحديث النسبة</span>' : ''
+                        ) : ''}
+                    </td>
+                    <td>${p.governorate}</td>
                     <td style="font-size: 0.8rem; color: #334155;">${p.donor}</td>
                     <td style="text-align: center; font-weight: 600;">${p.budget}</td>
                     <td>
@@ -1142,7 +1153,12 @@
                 document.getElementById('authBtn').classList.remove('btn-light');
                 document.getElementById('authBtn').classList.add('btn-danger');
                 document.getElementById('authBtn').onclick = handleLogout;
-                document.getElementById('editPermissionNote').innerHTML = `<span style="color: #10b981; font-weight: bold;"><i class="fa-solid fa-check"></i> لديك صلاحية التعديل والإضافة على: ${currentUser.region === 'all' ? 'كافة المناطق' : currentUser.region}</span>`;
+                
+                if (currentUser.role === 'admin') {
+                    document.getElementById('editPermissionNote').innerHTML = `<span style="color: #10b981; font-weight: bold;"><i class="fa-solid fa-shield-halved"></i> حساب إدارة عليا (${currentUser.name}) - كامل الصلاحيات (إضافة، تعديل، طباعة التقارير الرسمية)</span>`;
+                } else {
+                    document.getElementById('editPermissionNote').innerHTML = `<span style="color: #0284c7; font-weight: bold;"><i class="fa-solid fa-user-pen"></i> حساب مسؤول (${currentUser.region}) - صلاحية إضافة وتعديل مشاريع منطقتك فقط (التقارير الرسمية محصورة بالإدارة)</span>`;
+                }
             } else {
                 document.getElementById('userName').textContent = 'زائر (عرض فقط)';
                 document.getElementById('authBtn').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
@@ -1163,7 +1179,7 @@
 
         function openAddModal() {
             if (!currentUser) {
-                showToast('يرجى تسجيل الدخول أولاً للتمكن من إضافة مشروع جديد');
+                showToast('عفواً، إضافة المشاريع تتطلب تسجيل الدخول بحساب مسؤول المنطقة أو الإدارة.');
                 openLoginModal();
                 return;
             }
@@ -1202,7 +1218,13 @@
                 return;
             }
 
+            if (currentUser.role !== 'admin' && currentUser.region !== region) {
+                alert(`عفواً، صلاحيتك محصورة في إضافة مشاريع (${currentUser.region}) فقط.`);
+                return;
+            }
+
             const newId = projects.length > 0 ? (Math.max(...projects.map(p => p.id || 0)) + 1) : 1;
+            const curMonth = new Date().toISOString().slice(0, 7);
             const newProject = {
                 id: newId,
                 region: region,
@@ -1214,7 +1236,10 @@
                 progress: progress,
                 status: status,
                 notes: notes,
-                last_updated: new Date().toISOString().slice(0, 7)
+                last_updated: curMonth,
+                change_type: 'new',
+                change_month: curMonth,
+                change_desc: 'مشروع جديد مضاف هذا الشهر'
             };
 
             projects.push(newProject);
@@ -1260,6 +1285,10 @@
 
             const idx = projects.findIndex(p => p.id === id);
             if (idx !== -1) {
+                const curMonth = new Date().toISOString().slice(0, 7);
+                const oldProg = projects[idx].progress;
+                const oldStatus = projects[idx].status;
+
                 projects[idx].progress = newProg;
                 projects[idx].notes = newNotes;
                 if (newProg === 100) {
@@ -1269,7 +1298,22 @@
                 } else {
                     projects[idx].status = 'قيد التنفيذ';
                 }
-                projects[idx].last_updated = new Date().toISOString().slice(0, 7);
+                projects[idx].last_updated = curMonth;
+
+                // Track monthly changes
+                if (projects[idx].change_type !== 'new') {
+                    if (newProg === 100 && oldProg < 100) {
+                        projects[idx].change_type = 'completed_now';
+                        projects[idx].change_desc = `اكتمل هذا الشهر (كان ${oldProg}%)`;
+                    } else if (newProg !== oldProg) {
+                        projects[idx].change_type = 'progress_updated';
+                        projects[idx].change_desc = `تعديل نسبة: من ${oldProg}% إلى ${newProg}%`;
+                    } else if (projects[idx].status !== oldStatus) {
+                        projects[idx].change_type = 'status_changed';
+                        projects[idx].change_desc = `تغيير الحالة إلى: ${projects[idx].status}`;
+                    }
+                    projects[idx].change_month = curMonth;
+                }
 
                 localStorage.setItem('moh_projects_2026', JSON.stringify(projects));
 
@@ -1304,6 +1348,12 @@
         }
 
         function printOfficialReport() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('عفواً، طباعة التقرير الشهري الرسمي محصورة بالإدارة العليا (م. فادي محمود / رئيس وحدة الهندسة / مدير الأبنية).');
+                if (!currentUser) openLoginModal();
+                return;
+            }
+
             const d = new Date();
             const dateStr = d.toISOString().slice(0, 10);
             document.getElementById('printDate').textContent = dateStr;
@@ -1313,19 +1363,57 @@
             const stopped = projects.filter(p => p.status === 'متوقف').length;
             const ongoing = total - completed - stopped;
 
+            const curMonth = d.toISOString().slice(0, 7);
+            
+            // Calculate changes this month
+            const newCount = projects.filter(p => p.change_month === curMonth && p.change_type === 'new').length;
+            const compNowCount = projects.filter(p => p.change_month === curMonth && p.change_type === 'completed_now').length;
+            const updatedProgCount = projects.filter(p => p.change_month === curMonth && p.change_type === 'progress_updated').length;
+
             document.getElementById('printTotalCount').textContent = total;
             document.getElementById('printCompCount').textContent = completed;
             document.getElementById('printOngCount').textContent = ongoing;
             document.getElementById('printStopCount').textContent = stopped;
+
+            const changeBox = document.getElementById('printChangesBox');
+            if (changeBox) {
+                changeBox.innerHTML = `
+                    <span style="background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #fde68a;">
+                        🆕 مشاريع جديدة مضافة: ${newCount}
+                    </span>
+                    <span style="background: #dcfce7; color: #166534; padding: 3px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #bbf7d0;">
+                        ✅ اكتملت هذا الشهر: ${compNowCount}
+                    </span>
+                    <span style="background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #bae6fd;">
+                        📈 مشاريع تم تحديث نسبتها: ${updatedProgCount}
+                    </span>
+                `;
+            }
 
             const tbody = document.getElementById('printTableBody');
             tbody.innerHTML = '';
 
             projects.forEach(p => {
                 const tr = document.createElement('tr');
-                tr.style.borderBottom = '1px solid #e2e8f0';
-                if (p.progress === 100) tr.style.background = '#f0fdf4';
-                else if (p.status === 'متوقف') tr.style.background = '#fef2f2';
+                tr.style.borderBottom = '1px solid #cbd5e1';
+
+                let changeBadge = '<span style="color: #94a3b8; font-size: 0.72rem;">-</span>';
+                if (p.change_month === curMonth) {
+                    if (p.change_type === 'new') {
+                        tr.style.background = '#fffbeb';
+                        changeBadge = `<span style="background: #f59e0b; color: white; padding: 2px 7px; border-radius: 10px; font-size: 0.72rem; font-weight: bold; display: inline-flex; align-items: center; gap: 3px;"><i class="fa-solid fa-star"></i> مشروع جديد</span>`;
+                    } else if (p.change_type === 'completed_now') {
+                        tr.style.background = '#f0fdf4';
+                        changeBadge = `<span style="background: #10b981; color: white; padding: 2px 7px; border-radius: 10px; font-size: 0.72rem; font-weight: bold; display: inline-flex; align-items: center; gap: 3px;"><i class="fa-solid fa-check-double"></i> اكتمل هذا الشهر</span>`;
+                    } else if (p.change_type === 'progress_updated') {
+                        tr.style.background = '#f0f9ff';
+                        changeBadge = `<span style="background: #0284c7; color: white; padding: 2px 7px; border-radius: 10px; font-size: 0.72rem; font-weight: bold; display: inline-flex; align-items: center; gap: 3px;"><i class="fa-solid fa-arrow-trend-up"></i> ${p.change_desc || 'تم تحديث النسبة'}</span>`;
+                    }
+                } else if (p.progress === 100) {
+                    tr.style.background = '#ffffff';
+                } else if (p.status === 'متوقف') {
+                    tr.style.background = '#fff1f2';
+                }
 
                 tr.innerHTML = `
                     <td style="padding: 6px; text-align: center; font-weight: bold;">${p.id}</td>
@@ -1335,6 +1423,7 @@
                     <td style="padding: 6px; text-align: center;">${p.budget}</td>
                     <td style="padding: 6px; text-align: center; font-weight: bold;">${p.progress}%</td>
                     <td style="padding: 6px; text-align: center;">${p.status}</td>
+                    <td style="padding: 6px; text-align: center;">${changeBadge}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1347,6 +1436,12 @@
         }
 
         function exportMonthlyReport() {
+            if (!currentUser || currentUser.role !== 'admin') {
+                showToast('عفواً، تصدير التقرير الشهري الشامل محصور بالإدارة العليا (م. فادي محمود / رئيس وحدة الهندسة / مدير الأبنية).');
+                if (!currentUser) openLoginModal();
+                return;
+            }
+
             const d = new Date();
             const dateStr = d.toISOString().slice(0, 10);
             
@@ -1354,14 +1449,14 @@
             csvContent += "دولة فلسطين - وزارة الصحة - وحدة الهندسة والإنشاءات\n";
             csvContent += "STATE OF PALESTINE - MINISTRY OF HEALTH - ENGINEERING & CONSTRUCTION UNIT\n";
             csvContent += `تقرير متابعة المشاريع الصحية لعام 2026 | تاريخ التقرير: ${dateStr} | إعداد وتطوير: م. فادي محمود 2026\n\n`;
-            csvContent += "الرقم,اسم المشروع والمنشأة,المنطقة,المحافظة,الجهة المانحة,الموازنة / التكلفة,نسبة الإنجاز (%),الحالة,الموقف التنفيذي وملاحظات,آخر تحديث\n";
+            csvContent += "الرقم,اسم المشروع والمنشأة,المنطقة,المحافظة,الجهة المانحة,الموازنة / التكلفة,نسبة الإنجاز (%),الحالة,الموقف التنفيذي وملاحظات,مستجدات الشهر الحالي,آخر تحديث\n";
 
             projects.forEach(p => {
                 const cleanName = `"${p.name.replace(/"/g, '""')}"`;
                 const cleanDonor = `"${p.donor.replace(/"/g, '""')}"`;
                 const cleanBudget = `"${p.budget.replace(/"/g, '""')}"`;
                 const cleanNotes = `"${(p.notes || '').replace(/"/g, '""')}"`;
-                csvContent += `${p.id},${cleanName},${p.region},${p.governorate},${cleanDonor},${cleanBudget},${p.progress}%,${p.status},${cleanNotes},${p.last_updated || '2026-10'}\n`;
+                csvContent += `${p.id},${cleanName},${p.region},${p.governorate},${cleanDonor},${cleanBudget},${p.progress}%,${p.status},${cleanNotes},"${p.change_desc || (p.change_month === dateStr.slice(0, 7) ? p.change_type : 'ثابت')}",${p.last_updated || '2026-10'}\n`;
             });
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
