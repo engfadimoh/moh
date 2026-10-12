@@ -468,18 +468,75 @@
             }
         }
 
-        /* Printable Media Query */
+        /* Printable Media Query - إصلاح تقسيم الصفحات والطباعة المتعددة */
         @media print {
-            body * { visibility: hidden; }
-            #printArea, #printArea * { visibility: visible; }
-            #printArea {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 10px;
+            header, .user-nav, .filter-bar, .stats-grid, .charts-row, footer, .no-print, #toast, .card {
+                display: none !important;
             }
-            .no-print { display: none !important; }
+
+            body, html {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            #printReportModal {
+                display: block !important;
+                position: static !important;
+                background: transparent !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            #printReportModal .modal-content {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                max-height: none !important;
+                height: auto !important;
+                overflow: visible !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            #printArea {
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
+                overflow: visible !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            #printArea div[style*="overflow-y"] {
+                max-height: none !important;
+                overflow: visible !important;
+                border: none !important;
+            }
+
+            table {
+                width: 100% !important;
+                page-break-inside: auto !important;
+                border-collapse: collapse !important;
+            }
+
+            tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+            }
+
+            thead {
+                display: table-header-group !important;
+            }
+
+            tfoot {
+                display: table-footer-group !important;
+            }
         }
     </style>
 </head>
@@ -630,7 +687,7 @@
                         </tr>
                     </thead>
                     <tbody id="projectsTbody">
-                        <!-- Rendered by JavaScript -->
+                        <!-- Populated by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -1159,7 +1216,7 @@
                             p.change_type === 'progress_updated' ? '<span style="background: #0284c7; color: white; padding: 2px 6px; border-radius: 6px; font-size: 0.7rem; margin-right: 6px; font-weight: bold;"><i class="fa-solid fa-arrow-up"></i> تم تحديث النسبة</span>' : ''
                         ) : ''}
                     </td>
-                    <td><span style="color: #64748b;">${p.region}</span> - <strong>${p.governorate}</strong></td>
+                    <td>${p.governorate}</td>
                     <td style="font-size: 0.8rem; color: #334155;">${p.donor}</td>
                     <td style="text-align: center; font-weight: 600;">${p.budget}</td>
                     <td>
@@ -1417,14 +1474,12 @@
         }
 
         // Full Monthly Report Export (CSV / Excel Compatible UTF-8 with BOM)
-        
         function printOfficialReport() {
             if (!currentUser || currentUser.role !== 'admin') {
                 showToast('عفواً، طباعة التقرير الشهري الرسمي محصورة بالإدارة العليا (م. فادي محمود / رئيس وحدة الهندسة / مدير الأبنية).');
                 if (!currentUser) openLoginModal();
                 return;
             }
-
             const d = new Date();
             const dateStr = d.toISOString().slice(0, 10);
             document.getElementById('printDate').textContent = dateStr;
@@ -1512,14 +1567,13 @@
                 if (!currentUser) openLoginModal();
                 return;
             }
-
             const d = new Date();
             const dateStr = d.toISOString().slice(0, 10);
             
+            // Build CSV with BOM so Arabic displays perfectly in Excel
             let csvContent = "\uFEFF";
-            csvContent += "دولة فلسطين - وزارة الصحة - وحدة الهندسة والإنشاءات\n";
-            csvContent += "STATE OF PALESTINE - MINISTRY OF HEALTH - ENGINEERING & CONSTRUCTION UNIT\n";
-            csvContent += `تقرير متابعة المشاريع الصحية لعام 2026 | تاريخ التقرير: ${dateStr} | إعداد وتطوير: م. فادي محمود 2026\n\n`;
+            csvContent += "تقرير متابعة المشاريع الصحية لعام 2026 - وزارة الصحة الفلسطينية\n";
+            csvContent += `تاريخ استخراج التقرير: ${dateStr} | إعداد وتطوير: م. فادي محمود 2026\n\n`;
             csvContent += "الرقم,اسم المشروع والمنشأة,المنطقة,المحافظة,الجهة المانحة,الموازنة / التكلفة,نسبة الإنجاز (%),الحالة,الموقف التنفيذي وملاحظات,مستجدات الشهر الحالي,آخر تحديث\n";
 
             projects.forEach(p => {
