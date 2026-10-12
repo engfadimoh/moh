@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة متابعة المشاريع الصحية 2026 - وزارة الصحة</title>
+    <title>لوحة متابعة المشاريع الصحية 2026 - وزارة الصحة الفلسطينية</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js -->
@@ -40,8 +40,11 @@
             color: var(--text-main);
             min-height: 100vh;
             direction: rtl;
+            display: flex;
+            flex-direction: column;
         }
 
+        /* Header & Navbar */
         header {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
@@ -62,7 +65,7 @@
         }
 
         .brand i {
-            font-size: 2rem;
+            font-size: 2.2rem;
             color: #38bdf8;
         }
 
@@ -80,7 +83,8 @@
         .user-nav {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .badge-user {
@@ -96,7 +100,7 @@
         }
 
         .btn {
-            padding: 7px 16px;
+            padding: 7px 15px;
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.85rem;
@@ -132,12 +136,23 @@
             background: #0369a1;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 20px auto;
-            padding: 0 20px;
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        .btn-success:hover {
+            background: #059669;
         }
 
+        /* Container */
+        .container {
+            max-width: 1440px;
+            margin: 20px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -189,6 +204,7 @@
             opacity: 0.2;
         }
 
+        /* Charts Section */
         .charts-row {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -217,6 +233,8 @@
             margin-bottom: 15px;
             border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .card-header h2 {
@@ -228,6 +246,7 @@
             gap: 8px;
         }
 
+        /* Filter Controls */
         .filter-bar {
             background: var(--card-bg);
             padding: 16px;
@@ -265,6 +284,7 @@
             border-color: var(--secondary);
         }
 
+        /* Table */
         .table-responsive {
             overflow-x: auto;
             border-radius: 10px;
@@ -297,6 +317,7 @@
             background: #f8fafc;
         }
 
+        /* Progress Bar in Table */
         .prog-container {
             display: flex;
             align-items: center;
@@ -330,6 +351,7 @@
         .status-ongoing { background: #e0f2fe; color: #0369a1; }
         .status-stopped { background: #fee2e2; color: #991b1b; }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -347,654 +369,3 @@
         .modal-content {
             background: white;
             border-radius: 14px;
-            width: 90%;
-            max-width: 520px;
-            padding: 24px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: fadeIn 0.2s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: var(--text-main);
-        }
-
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-size: 0.9rem;
-            font-family: inherit;
-        }
-
-        #toast {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: #0f172a;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            display: none;
-            z-index: 9999;
-            font-size: 0.9rem;
-            align-items: center;
-            gap: 10px;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Header -->
-    <header>
-        <div class="brand">
-            <i class="fa-solid fa-hospital"></i>
-            <div>
-                <h1>منظومة المتابعة الذكية للمشاريع الصحية 2026</h1>
-                <p>وحدة الهندسة والإنشاءات - وزارة الصحة الفلسطينية</p>
-            </div>
-        </div>
-
-        <div class="user-nav">
-            <div id="syncBadge" class="badge-user" style="background: rgba(16, 185, 129, 0.2); border-color: #10b981; color: #4ade80;" title="حالة الاتصال السحابي المباشر">
-                <i class="fa-solid fa-cloud"></i>
-                <span id="syncText">سحابي مباشر (Firebase)</span>
-            </div>
-            <div id="userDisplay" class="badge-user">
-                <i class="fa-solid fa-user-shield"></i>
-                <span id="userName">زائر (عرض فقط)</span>
-            </div>
-            <button id="authBtn" class="btn btn-light" onclick="openLoginModal()">
-                <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
-            </button>
-            <button class="btn btn-primary" onclick="exportDataToExcel()">
-                <i class="fa-solid fa-file-excel"></i> تصدير إكسل
-            </button>
-        </div>
-    </header>
-
-    <div class="container">
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <div class="stat-card total">
-                <div class="stat-info">
-                    <h3>إجمالي المشاريع</h3>
-                    <div class="num" id="statTotal">105</div>
-                </div>
-                <i class="fa-solid fa-diagram-project stat-icon" style="color: var(--primary);"></i>
-            </div>
-            <div class="stat-card completed">
-                <div class="stat-info">
-                    <h3>المشاريع المنجزة (2026)</h3>
-                    <div class="num" id="statCompleted">32</div>
-                </div>
-                <i class="fa-solid fa-circle-check stat-icon" style="color: var(--accent);"></i>
-            </div>
-            <div class="stat-card ongoing">
-                <div class="stat-info">
-                    <h3>قيد التنفيذ والمتابعة</h3>
-                    <div class="num" id="statOngoing">63</div>
-                </div>
-                <i class="fa-solid fa-spinner stat-icon" style="color: var(--secondary);"></i>
-            </div>
-            <div class="stat-card stopped">
-                <div class="stat-info">
-                    <h3>مشاريع متوقفة / تعثر مالي</h3>
-                    <div class="num" id="statStopped">10</div>
-                </div>
-                <i class="fa-solid fa-triangle-exclamation stat-icon" style="color: var(--danger);"></i>
-            </div>
-        </div>
-
-        <!-- Charts Row -->
-        <div class="charts-row">
-            <div class="card">
-                <div class="card-header">
-                    <h2><i class="fa-solid fa-chart-column"></i> توزيع نسب الإنجاز حسب المحافظات</h2>
-                    <span style="font-size: 0.8rem; color: var(--text-muted);">تحديث شهري مستمر 2026</span>
-                </div>
-                <canvas id="govChart" height="110"></canvas>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <h2><i class="fa-solid fa-chart-pie"></i> حالة المشاريع الكلية</h2>
-                </div>
-                <canvas id="statusChart" height="220"></canvas>
-            </div>
-        </div>
-
-        <!-- Filter Controls -->
-        <div class="filter-bar">
-            <div class="filter-group">
-                <label><i class="fa-solid fa-map-location-dot"></i> المنطقة:</label>
-                <select id="regionFilter" onchange="applyFilters()">
-                    <option value="الكل">كافة المناطق</option>
-                    <option value="منطقة الشمال">منطقة الشمال</option>
-                    <option value="منطقة الوسط">منطقة الوسط</option>
-                    <option value="منطقة الجنوب">منطقة الجنوب</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label><i class="fa-solid fa-hand-holding-dollar"></i> الجهة المانحة:</label>
-                <select id="donorFilter" onchange="applyFilters()">
-                    <option value="الكل">كافة المانحين</option>
-                </select>
-            </div>
-
-            <div class="filter-group">
-                <label><i class="fa-solid fa-filter"></i> الحالة:</label>
-                <select id="statusFilter" onchange="applyFilters()">
-                    <option value="الكل">كافة الحالات</option>
-                    <option value="مكتمل">مكتمل (2026)</option>
-                    <option value="قيد التنفيذ">قيد التنفيذ</option>
-                    <option value="متوقف">متوقف مؤقتاً</option>
-                </select>
-            </div>
-
-            <div class="filter-group" style="flex: 1; min-width: 220px;">
-                <input type="text" id="searchInput" placeholder="بحث باسم المشروع أو المنشأة..." oninput="applyFilters()" style="width: 100%;">
-            </div>
-        </div>
-
-        <!-- Table Card -->
-        <div class="card" style="padding: 10px;">
-            <div class="card-header" style="padding: 10px 14px;">
-                <h2><i class="fa-solid fa-table-list"></i> جدول متابعة المشاريع الميدانية</h2>
-                <div id="editPermissionNote" style="font-size: 0.85rem; color: var(--text-muted);">
-                    سجل دخولك لتعديل نسبة الإنجاز والملاحظات
-                </div>
-            </div>
-
-            <div class="table-responsive">
-                <table id="projectsTable">
-                    <thead>
-                        <tr>
-                            <th style="width: 40px;">م</th>
-                            <th>اسم المشروع والمنشأة</th>
-                            <th>المنطقة / المحافظة</th>
-                            <th>الجهة المانحة</th>
-                            <th>الموازنة</th>
-                            <th style="width: 160px;">نسبة الإنجاز الفعلية</th>
-                            <th>الحالة</th>
-                            <th>الموقف التنفيذي وملاحظات</th>
-                            <th style="width: 80px; text-align: center;">إجراء</th>
-                        </tr>
-                    </thead>
-                    <tbody id="projectsTbody">
-                        <!-- Rendered by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="font-weight: 700; color: var(--primary);"><i class="fa-solid fa-lock"></i> تسجيل الدخول للنظام</h3>
-                <i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 1.2rem;" onclick="closeLoginModal()"></i>
-            </div>
-            <div class="form-group">
-                <label>اسم المستخدم / الحساب:</label>
-                <select id="userSelect">
-                    <option value="eng_fadi">م. فادي محمود (معد النظام - مسؤول رئيسي)</option>
-                    <option value="eng_head">مسؤول وحدة الهندسة والإنشاءات</option>
-                    <option value="bldg_dir">مدير الأبنية والمنشآت</option>
-                    <option value="north_mgr">مسؤول مشاريع منطقة الشمال</option>
-                    <option value="center_mgr">مسؤول مشاريع منطقة الوسط</option>
-                    <option value="south_mgr">مسؤول مشاريع منطقة الجنوب</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>كلمة المرور:</label>
-                <input type="password" id="passwordInput" placeholder="أدخل كلمة المرور...">
-            </div>
-            <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 10px;" onclick="handleLogin()">
-                دخول النظام
-            </button>
-            <div style="margin-top: 15px; font-size: 0.78rem; color: #64748b; line-height: 1.5; background: #f1f5f9; padding: 10px; border-radius: 8px;">
-                <strong>حسابات النظام الافتراضية:</strong><br>
-                • م. فادي محمود: <code>fadi@2026</code> (صلاحية كاملة)<br>
-                • مسؤول وحدة الهندسة / مدير الأبنية: <code>admin@eng2026</code> / <code>bldg@2026</code><br>
-                • مسؤول الشمال: <code>north@2026</code> | الوسط: <code>center@2026</code> | الجنوب: <code>south@2026</code>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Project Modal -->
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="font-weight: 700; color: var(--primary);"><i class="fa-solid fa-pen-to-square"></i> تعديل نسبة الإنجاز الشهرية</h3>
-                <i class="fa-solid fa-xmark" style="cursor: pointer; font-size: 1.2rem;" onclick="closeEditModal()"></i>
-            </div>
-            <input type="hidden" id="editProjId">
-            <div class="form-group">
-                <label>اسم المشروع:</label>
-                <p id="editProjName" style="font-weight: 600; color: var(--text-main); font-size: 0.9rem; background: #f8fafc; padding: 8px; border-radius: 6px;"></p>
-            </div>
-            <div class="form-group">
-                <label>نسبة الإنجاز الشهرية الحالية (%):</label>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <input type="range" id="editProgRange" min="0" max="100" step="1" oninput="document.getElementById('editProgInput').value = this.value" style="flex: 1;">
-                    <input type="number" id="editProgInput" min="0" max="100" oninput="document.getElementById('editProgRange').value = this.value" style="width: 75px; text-align: center;"> %
-                </div>
-            </div>
-            <div class="form-group">
-                <label>الموقف التنفيذي والتحديثات:</label>
-                <textarea id="editNotes" rows="3"></textarea>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="saveProjectUpdate()">
-                    <i class="fa-solid fa-floppy-disk"></i> حفظ التحديث
-                </button>
-                <button class="btn btn-light" style="flex: 1; justify-content: center;" onclick="closeEditModal()">
-                    إلغاء
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="toast">
-        <i class="fa-solid fa-circle-check" style="color: #4ade80;"></i>
-        <span id="toastMsg">تم الحفظ بنجاح</span>
-    </div>
-
-    <script>
-        // Database of 105 projects
-        const rawProjectsData = [{"id": 1, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة بردلا", "budget": "-", "progress_raw": "70%", "progress": 70, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 2, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة عزون عتمة", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 3, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة العقبة", "budget": "-", "progress_raw": "85%", "progress": 85, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 4, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة دير قديس", "budget": "210,102 شيكل", "progress_raw": "85%", "progress": 85, "status": "قيد التنفيذ", "notes": "تنفيذ أوتاد عاشور", "last_updated": "2026-10"}, {"id": 5, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة اللبن الغربية", "budget": "-", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 6, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة قراوة بني حسان", "budget": "-", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 7, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة عابود", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 8, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة عاطوف", "budget": "-", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 9, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة ياسوف", "budget": "54,070 شيكل", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "تنفيذ شركة جرارعة", "last_updated": "2026-10"}, {"id": 10, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة بورين", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 11, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة عوريف", "budget": "-", "progress_raw": "85%", "progress": 85, "status": "قيد التنفيذ", "notes": "تنفيذ شركة القصبة", "last_updated": "2026-10"}, {"id": 12, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة اللبن الشرقية", "budget": "78,426 شيكل", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "تنفيذ شركة القصبة", "last_updated": "2026-10"}, {"id": 13, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة قصرة", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 14, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة رافات", "budget": "-", "progress_raw": "75%", "progress": 75, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 15, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة برقة", "budget": "-", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 16, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة رامين", "budget": "195,616 شيكل", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "تنفيذ شركة الحمدية", "last_updated": "2026-10"}, {"id": 17, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة حبله", "budget": "-", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 18, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "منظمة أطباء العالم - فرنسا (MDM France)", "name": "إعادة تأهيل عيادة مردا", "budget": "-", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "جاري التنفيذ", "last_updated": "2026-10"}, {"id": 19, "region": "منطقة الشمال", "governorate": "جنين", "donor": "منظمة وي وورلد (WE World)", "name": "ترميم حمامات مستشفى جنين الحكومي (سكن الأطباء، الجراحة، والأطفال)", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم إنجاز العمل والاستلام بالكامل", "last_updated": "2026-10"}, {"id": 20, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تركيب نظام طاقة شمسية مع البطاريات - عيادة عنبتا", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تسليم واستلام نهائي في 2026", "last_updated": "2026-10"}, {"id": 21, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "منظمة اليونيسيف (UNICEF)", "name": "توريد وتركيب مولد كهربائي ضخم بقدرة 1000 KVA - مستشفى سلفيت", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تشغيل فعلي في 2026", "last_updated": "2026-10"}, {"id": 22, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تركيب خلايا شمسية لتوليد الكهرباء - مديرية صحة طوباس", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء والتشغيل في 2026", "last_updated": "2026-10"}, {"id": 23, "region": "منطقة الشمال", "governorate": "جنين وطولكرم", "donor": "منظمة اليونيسيف (UNICEF)", "name": "توريد وتركيب 20 مولداً كهربائياً لسلسلة التبريد (20 عيادة)", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تشغيل كامل في العيادات", "last_updated": "2026-10"}, {"id": 24, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تركيب نظام طاقة شمسية ببطاريات - عيادة المخفية", "budget": "-", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "قيد استكمال الأعمال", "last_updated": "2026-10"}, {"id": 25, "region": "منطقة الشمال", "governorate": "جنين", "donor": "منظمة اليونيسيف (UNICEF)", "name": "ترميم وإعادة تأهيل عيادتي رمانة وعانين الصحية", "budget": "-", "progress_raw": "متقدمة", "progress": 85, "status": "قيد التنفيذ", "notes": "التسليم المتوقع نهاية نوفمبر 2026", "last_updated": "2026-10"}, {"id": 26, "region": "منطقة الشمال", "governorate": "جنين", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تشطيب مبنى صحة رمانة ومبنى صحة عانين الجديدين", "budget": "2,000,000 شيكل", "progress_raw": "70%", "progress": 70, "status": "قيد التنفيذ", "notes": "جاري العمل (مليون شيكل لكل مبنى)", "last_updated": "2026-10"}, {"id": 27, "region": "منطقة الشمال", "governorate": "جنين", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تركيب نظام طاقة شمسية بمديرية صحة جنين", "budget": "-", "progress_raw": "30%", "progress": 30, "status": "قيد التنفيذ", "notes": "قيد التوريد والتركيب", "last_updated": "2026-10"}, {"id": 28, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تركيب نظام طاقة شمسية بمديرية صحة سلفيت", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "قيد الأعمال الفنية", "last_updated": "2026-10"}, {"id": 29, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "منظمة اليونيسيف (UNICEF)", "name": "ترميم عيادة كفر قدوم وتركيب طاقة شمسية", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "تسليم الموقع المخطط أواخر أكتوبر 2026", "last_updated": "2026-10"}, {"id": 30, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تركيب طاقة شمسية بالمركز الصحي الشرقي", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 31, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "منظمة اليونيسيف (UNICEF)", "name": "ترميم عيادة طوباس القديمة وخلايا شمسية", "budget": "-", "progress_raw": "خلايا 98% / ترميم 50%", "progress": 98, "status": "قيد التنفيذ", "notes": "تسليم الخلايا منتصف أكتوبر 2026", "last_updated": "2026-10"}, {"id": 32, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "منظمة اليونيسيف (UNICEF)", "name": "تركيب طاقة شمسية بطوارئ بيت ريما وعيادة بير نبالا", "budget": "-", "progress_raw": "98%", "progress": 98, "status": "قيد التنفيذ", "notes": "تسليم واستلام وشيك", "last_updated": "2026-10"}, {"id": 33, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "منظمة اليونيسيف (UNICEF)", "name": "توريد وتركيب أنظمة طاقة شمسية بصحة الخليل", "budget": "-", "progress_raw": "25%", "progress": 25, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 34, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "منظمة اليونيسيف (UNICEF)", "name": "إعادة تأهيل عيادة بيت فجار", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "تسليم الموقع منتصف أكتوبر 2026", "last_updated": "2026-10"}, {"id": 35, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "منظمة اليونيسيف (UNICEF)", "name": "طاقة شمسية لعيادات بيت فجار وحوسان وصحة بيت لحم", "budget": "-", "progress_raw": "30%", "progress": 30, "status": "قيد التنفيذ", "notes": "قيد التنفيذ", "last_updated": "2026-10"}, {"id": 36, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "تأهيل المطبخ - مجمع فلسطين الطبي (أبناء رام الله)", "budget": "300,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الإنجاز والتشغيل في 2026", "last_updated": "2026-10"}, {"id": 37, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "عناية مكثفة للأطفال وقاعة علمية - مستشفى يطا", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء والتشغيل في 2026", "last_updated": "2026-10"}, {"id": 38, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "توسعة وتأهيل قسم الكلية - مستشفى الخليل الحكومي", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "دعم المجتمع وأصدقاء مرضى الكلى", "last_updated": "2026-10"}, {"id": 39, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "بناء مركز صحي خلة المية - يطا", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "بلدية يطا والمجتمع المحلي", "last_updated": "2026-10"}, {"id": 40, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "تأهيل عيادة ترقوميا وعيادة إذنا", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تمويل بلديتي ترقوميا وإذنا", "last_updated": "2026-10"}, {"id": 41, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "تأهيل الطابق العلوي بقسم الكلية - مستشفى الخليل", "budget": "800,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "مرحلة الاستلام في 2026", "last_updated": "2026-10"}, {"id": 42, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "توسيع وتشطيب عيادة قفان خميس - الشيوخ", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "مرحلة الاستلام النهائي في 2026", "last_updated": "2026-10"}, {"id": 43, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "حفريات وتسوية موقع التوسعة - المستشفى الوطني", "budget": "-", "progress_raw": "35%", "progress": 35, "status": "قيد التنفيذ", "notes": "تنفيذ بلدية نابلس وتبرع مجتمعي", "last_updated": "2026-10"}, {"id": 44, "region": "منطقة الشمال", "governorate": "جنين", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "ترميم قسم الولادة - مستشفى جنين الحكومي", "budget": "-", "progress_raw": "63%", "progress": 63, "status": "قيد التنفيذ", "notes": "إدارة الغرفة التجارية ودعم مجتمعي", "last_updated": "2026-10"}, {"id": 45, "region": "منطقة الشمال", "governorate": "جنين", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "بناء وحدة سرطان الثدي وقسم الأنسجة - مستشفى جنين", "budget": "-", "progress_raw": "40%", "progress": 40, "status": "قيد التنفيذ", "notes": "تبرع مجتمعي", "last_updated": "2026-10"}, {"id": 46, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "توسعة قسم الكلى - مستشفى طولكرم الحكومي", "budget": "-", "progress_raw": "95%", "progress": 95, "status": "قيد التنفيذ", "notes": "مراحل التشطيب النهائية", "last_updated": "2026-10"}, {"id": 47, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "بناء التوسعة بمستشفى قلقيلية (مستودعات، كلى، أورام)", "budget": "-", "progress_raw": "85%", "progress": 85, "status": "قيد التنفيذ", "notes": "جاري العمل بوتيرة متقدمة", "last_updated": "2026-10"}, {"id": 48, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "بناء وتشطيب عيادة باقة الحطب", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "بلدية باقة الحطب ومجتمع محلي", "last_updated": "2026-10"}, {"id": 49, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "بناء قسم القسطرة بالطابق الثاني - مستشفى قلقيلية", "budget": "-", "progress_raw": "55%", "progress": 55, "status": "قيد التنفيذ", "notes": "مرحلة العظم", "last_updated": "2026-10"}, {"id": 50, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "تشطيب التسوية وقسم الأطفال - مستشفى يطا", "budget": "-", "progress_raw": "97%", "progress": 97, "status": "قيد التنفيذ", "notes": "تشطيبات نهائية", "last_updated": "2026-10"}, {"id": 51, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "تشطيب عيادة الشيوخ الصحية", "budget": "850,000 شيكل", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "شراكة بلدية الشيوخ والصحة", "last_updated": "2026-10"}, {"id": 52, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "مبنى أمراض الكلى - مستشفى محمود عباس (حلحول)", "budget": "-", "progress_raw": "45%", "progress": 45, "status": "قيد التنفيذ", "notes": "مرحلة الحفر وتسوية الموقع", "last_updated": "2026-10"}, {"id": 53, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "المجتمع المحلي والبلديات والتبرعات الأهلية", "name": "تأهيل مطبخ مستشفى الأمراض العقلية", "budget": "-", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "بدء العمل يونيو 2026", "last_updated": "2026-10"}, {"id": 54, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "تشطيب قسم القلب - مستشفى رفيديا الحكومي", "budget": "4,822,255 شيكل", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء والتشغيل في 2026", "last_updated": "2026-10"}, {"id": 55, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "صيانة مقر وحدة الهندسة والإنشاءات بالوزارة", "budget": "123,800 شيكل", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء في 2026", "last_updated": "2026-10"}, {"id": 56, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "تصميم قسم القسطرة بالطابق الثاني - مستشفى قلقيلية", "budget": "33,500 شيكل", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "إنجاز المخططات النهائية في 2026", "last_updated": "2026-10"}, {"id": 57, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "عزل سطوح مبنى المستودعات - رام الله", "budget": "255,290 شيكل", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء في 2026", "last_updated": "2026-10"}, {"id": 58, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "صيانة عيادة الرشايدة", "budget": "14,100 شيكل", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء في 2026", "last_updated": "2026-10"}, {"id": 59, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "تشغيل المرحلة الثانية - مستشفى عتيل الحكومي", "budget": "1,440,055 شيكل", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "أطفال، حاضنات، باطني، مطبخ", "last_updated": "2026-10"}, {"id": 60, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "تشطيب المرحلة الثانية للعيادة الشرقية", "budget": "500,000 شيكل", "progress_raw": "65%", "progress": 65, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 61, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "بناء طابقين فوق الكلية القديمة - مجمع فلسطين الطبي", "budget": "9,182,882 شيكل", "progress_raw": "85%", "progress": 85, "status": "متوقف", "notes": "متوقف مؤقتاً (مستحقات مالية)", "last_updated": "2026-10"}, {"id": 62, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "بناء 3 طوابق فوق مبنى الكلى الجديد - مجمع فلسطين", "budget": "7,994,953 شيكل", "progress_raw": "70%", "progress": 70, "status": "متوقف", "notes": "متوقف بسبب المستحقات", "last_updated": "2026-10"}, {"id": 63, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "بناء وتشطيب مركز صحي بيرزيت", "budget": "3,370,770 شيكل", "progress_raw": "70%", "progress": 70, "status": "متوقف", "notes": "متوقف (مالياً + خطر جدار مقبرة)", "last_updated": "2026-10"}, {"id": 64, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "توسيع النسائية والحاضنات وصيدلية - مجمع فلسطين", "budget": "1,789,880 شيكل", "progress_raw": "65%", "progress": 65, "status": "متوقف", "notes": "متوقف بسبب الدفعات", "last_updated": "2026-10"}, {"id": 65, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "بناء وتشطيب عيادة أم الشرايط", "budget": "5,947,922 شيكل", "progress_raw": "30%", "progress": 30, "status": "متوقف", "notes": "متوقف كاملاً", "last_updated": "2026-10"}, {"id": 66, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "إعادة تأهيل مركز طوارئ حوارة", "budget": "-", "progress_raw": "35%", "progress": 35, "status": "متوقف", "notes": "متوقف بسبب مستحقات المقاول", "last_updated": "2026-10"}, {"id": 67, "region": "منطقة الشمال", "governorate": "جنين", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "توسعة قسم الكلى - مستشفى جنين الحكومي", "budget": "-", "progress_raw": "40%", "progress": 40, "status": "متوقف", "notes": "تباطؤ وتوقف للدفعات", "last_updated": "2026-10"}, {"id": 68, "region": "منطقة الشمال", "governorate": "جنين", "donor": "وزارة المالية والتمويل الحكومي (وزارة الصحة)", "name": "تشطيب قسم القلب - مستشفى جنين الحكومي", "budget": "1,200,000 دولار", "progress_raw": "20%", "progress": 20, "status": "متوقف", "notes": "توقف عمل المقاول", "last_updated": "2026-10"}, {"id": 69, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "البنك الدولي (World Bank)", "name": "تأهيل قاعة اجتماعات مكتب الوكيل - مبنى الوزارة", "budget": "159,793 شيكل", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء في 2026", "last_updated": "2026-10"}, {"id": 70, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "البنك الدولي (World Bank)", "name": "تأهيل جزء من مختبر مستشفى طولكرم الحكومي", "budget": "-", "progress_raw": "95%", "progress": 95, "status": "قيد التنفيذ", "notes": "مراحل تسليم نهائية", "last_updated": "2026-10"}, {"id": 71, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "البنك الدولي (World Bank)", "name": "تأهيل بنك الدم لزراعة البكتيريا - مستشفى طوباس", "budget": "57,200 شيكل", "progress_raw": "طرح عطاء", "progress": 5, "status": "قيد التنفيذ", "notes": "مرحلة الإجراءات التعاقدية", "last_updated": "2026-10"}, {"id": 72, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "البنك الدولي (World Bank)", "name": "إعادة تأهيل مختبر الصحة المركزي", "budget": "-", "progress_raw": "5%", "progress": 5, "status": "قيد التنفيذ", "notes": "صدر أمر المباشرة حديثاً", "last_updated": "2026-10"}, {"id": 73, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "البنك الدولي (World Bank)", "name": "ترميم وتأهيل مختبر مستشفى الخليل وعيادة السلام", "budget": "-", "progress_raw": "70%", "progress": 70, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 74, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "البنك الدولي (World Bank)", "name": "تأهيل أقسام الباثولوجي (عالية + حلحول + السلام)", "budget": "-", "progress_raw": "70%", "progress": 70, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 75, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "البنك الدولي (World Bank)", "name": "ترميم مختبر مستشفى بيت جالا (ميكروبيولوجي)", "budget": "47,000 دولار", "progress_raw": "70%", "progress": 70, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 76, "region": "منطقة الشمال", "governorate": "جنين", "donor": "جمعية إغاثة أطفال فلسطين (PCRF)", "name": "ترميم غرفة العمليات - مستشفى جنين الحكومي", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الإنجاز في 2026", "last_updated": "2026-10"}, {"id": 77, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "جمعية إغاثة أطفال فلسطين (PCRF)", "name": "إعادة تأهيل وتوسعة قسم الطوارئ - مستشفى طولكرم", "budget": "900,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء بنسبة 100% في 2026", "last_updated": "2026-10"}, {"id": 78, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "جمعية إغاثة أطفال فلسطين (PCRF)", "name": "إعادة تأهيل عيادات (دورا، بيت كاحل، عين سارة)", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الإنجاز في 2026", "last_updated": "2026-10"}, {"id": 79, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "جمعية إغاثة أطفال فلسطين (PCRF)", "name": "عناية مكثفة للأطفال ومختبر أنسجة - مستشفى بيت جالا", "budget": "1,677,000 شيكل", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء والتشغيل في 2026", "last_updated": "2026-10"}, {"id": 80, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "جمعية إغاثة أطفال فلسطين (PCRF)", "name": "إعادة تأهيل قسم الأطفال - مستشفى الخليل الحكومي", "budget": "800,000 دولار", "progress_raw": "70%", "progress": 70, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 81, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "جمعية إغاثة أطفال فلسطين (PCRF)", "name": "توسعة وتشطيب إضافي لقسم الباثولوجي - بيت جالا", "budget": "-", "progress_raw": "20%", "progress": 20, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 82, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "الصناديق العربية والإسلامية والبنك الإسلامي (بكدار)", "name": "مستودعات الأدوية والعيادات والصيدلية - م. طولكرم", "budget": "1,300,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "الصناديق العربية والإسلامية (2026)", "last_updated": "2026-10"}, {"id": 83, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "الصناديق العربية والإسلامية والبنك الإسلامي (بكدار)", "name": "تشطيب توسعة مستشفى سلفيت - المرحلة الثالثة", "budget": "2,000,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "البنك الإسلامي (2026)", "last_updated": "2026-10"}, {"id": 84, "region": "منطقة الشمال", "governorate": "جنين", "donor": "الصناديق العربية والإسلامية والبنك الإسلامي (بكدار)", "name": "إنشاء وتشطيب توسعة أبنية مستشفى جنين والساحة", "budget": "3,350,703 دولار", "progress_raw": "40%", "progress": 40, "status": "قيد التنفيذ", "notes": "جاري العمل عبر بكدار", "last_updated": "2026-10"}, {"id": 85, "region": "منطقة الوسط", "governorate": "القدس", "donor": "الصناديق العربية والإسلامية والبنك الإسلامي (بكدار)", "name": "طابق إضافي ومستودعات بمديرية صحة القدس", "budget": "960,000 دولار", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "جاري العمل عبر بكدار", "last_updated": "2026-10"}, {"id": 86, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "الصناديق العربية والإسلامية والبنك الإسلامي (بكدار)", "name": "تأهيل الباطني والمطبخ والمغسلة - مستشفى الخليل", "budget": "1,122,000 دولار", "progress_raw": "90%", "progress": 90, "status": "قيد التنفيذ", "notes": "جاري العمل عبر بكدار", "last_updated": "2026-10"}, {"id": 87, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "الصناديق العربية والإسلامية والبنك الإسلامي (بكدار)", "name": "تشطيب طابقين والأعمال الخارجية - مستشفى الظاهرية", "budget": "1,640,000 دولار", "progress_raw": "80%", "progress": 80, "status": "قيد التنفيذ", "notes": "البنك الإسلامي وبلدية الظاهرية", "last_updated": "2026-10"}, {"id": 88, "region": "منطقة الشمال", "governorate": "نابلس", "donor": "مؤسسة جذور للتنمية الصحية والاجتماعية", "name": "تطوير عيادة عصيرة الشمالية", "budget": "-", "progress_raw": "الدراسة", "progress": 5, "status": "قيد التنفيذ", "notes": "في مرحلة الدراسة الهندسية", "last_updated": "2026-10"}, {"id": 89, "region": "منطقة الشمال", "governorate": "طولكرم", "donor": "مؤسسة جذور للتنمية الصحية والاجتماعية", "name": "تطوير عيادة باقة الشرقية", "budget": "-", "progress_raw": "الترسية", "progress": 15, "status": "قيد التنفيذ", "notes": "في مرحلة الترسية", "last_updated": "2026-10"}, {"id": 90, "region": "منطقة الشمال", "governorate": "سلفيت", "donor": "مؤسسة جذور للتنمية الصحية والاجتماعية", "name": "تطوير عيادة الزاوية", "budget": "-", "progress_raw": "الترسية", "progress": 15, "status": "قيد التنفيذ", "notes": "في مرحلة الترسية", "last_updated": "2026-10"}, {"id": 91, "region": "منطقة الشمال", "governorate": "قلقيلية", "donor": "مؤسسة جذور للتنمية الصحية والاجتماعية", "name": "تشطيب الطابق الإضافي بمركز صحي عزون", "budget": "-", "progress_raw": "40%", "progress": 40, "status": "قيد التنفيذ", "notes": "بالشراكة مع متبرع محلي", "last_updated": "2026-10"}, {"id": 92, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "مؤسسة جذور للتنمية الصحية والاجتماعية", "name": "تطوير عيادة عين البيضاء", "budget": "-", "progress_raw": "الدراسة", "progress": 5, "status": "قيد التنفيذ", "notes": "مرحلة الدراسة والتقييم الهندسي", "last_updated": "2026-10"}, {"id": 93, "region": "منطقة الوسط", "governorate": "رام الله والبيرة", "donor": "مؤسسة جذور للتنمية الصحية والاجتماعية", "name": "تطوير عيادة نعلين", "budget": "-", "progress_raw": "الدراسة", "progress": 5, "status": "قيد التنفيذ", "notes": "مرحلة الدراسة الهندسية", "last_updated": "2026-10"}, {"id": 94, "region": "منطقة الوسط", "governorate": "أريحا", "donor": "مؤسسة جذور للتنمية الصحية والاجتماعية", "name": "تطوير عيادة أريحا المركزية", "budget": "-", "progress_raw": "الدراسة", "progress": 5, "status": "قيد التنفيذ", "notes": "مرحلة الدراسة والتقييم", "last_updated": "2026-10"}, {"id": 95, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "منظمة الصحة العالمية (WHO)", "name": "توريد وتركيب مصعد مستشفى دورا", "budget": "57,500 يورو", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تشغيل فعلي في 2026", "last_updated": "2026-10"}, {"id": 96, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "منظمة الصحة العالمية (WHO)", "name": "تجهيز وتشطيب سرطان الثدي وبنك الدم - مستشفى دورا", "budget": "90,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "استلام نهائي في 2026", "last_updated": "2026-10"}, {"id": 97, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "منظمة الصحة العالمية (WHO)", "name": "ترميم قسم الإدخال (رجال) - م. بيت لحم للطب النفسي", "budget": "285,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء في 2026", "last_updated": "2026-10"}, {"id": 98, "region": "منطقة الشمال", "governorate": "جنين", "donor": "منظمة الصحة العالمية (WHO)", "name": "توريد وتركيب تبريد مركزي (تشلر) - مستشفى جنين", "budget": "800,000 شيكل", "progress_raw": "40%", "progress": 40, "status": "قيد التنفيذ", "notes": "جاري العمل", "last_updated": "2026-10"}, {"id": 99, "region": "منطقة الشمال", "governorate": "جنين", "donor": "شركاء ومؤسسات تنموية أخرى", "name": "طاقة شمسية - صحة جنين المركزية (مؤسسة معاً)", "budget": "-", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الإنجاز والتشغيل في 2026", "last_updated": "2026-10"}, {"id": 100, "region": "منطقة الوسط", "governorate": "أريحا", "donor": "شركاء ومؤسسات تنموية أخرى", "name": "بناء عيادة جديدة بأريحا (مؤسسة معاً)", "budget": "415,000 دولار", "progress_raw": "65%", "progress": 65, "status": "قيد التنفيذ", "notes": "إنشاءات وتجهيزات جارية", "last_updated": "2026-10"}, {"id": 101, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "شركاء ومؤسسات تنموية أخرى", "name": "ترميم وتأهيل أقسام مستشفى المحتسب (UNDP & KfW)", "budget": "600,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "استلام نهائي في 2026", "last_updated": "2026-10"}, {"id": 102, "region": "منطقة الجنوب", "governorate": "الخليل", "donor": "شركاء ومؤسسات تنموية أخرى", "name": "وحدة سرطان الثدي - مستشفى حلحول (مؤسسة MAP)", "budget": "250,000 دولار", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "استلام نهائي في 2026", "last_updated": "2026-10"}, {"id": 103, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "شركاء ومؤسسات تنموية أخرى", "name": "الحديقة الحسية - مستشفى الطب النفسي (إيطاليا/RING)", "budget": "37,200 يورو", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الإنجاز في 2026", "last_updated": "2026-10"}, {"id": 104, "region": "منطقة الجنوب", "governorate": "بيت لحم", "donor": "شركاء ومؤسسات تنموية أخرى", "name": "مشروع كوخ الشمع - مستشفى بيت لحم (مجموعة RING)", "budget": "33,000 يورو", "progress_raw": "مكتمل (2026)", "progress": 100, "status": "مكتمل", "notes": "تم الانتهاء في 2026", "last_updated": "2026-10"}, {"id": 105, "region": "منطقة الشمال", "governorate": "طوباس", "donor": "شركاء ومؤسسات تنموية أخرى", "name": "إنشاء قسم طوارئ بعين البيضا (الصليب الأحمر ICRC)", "budget": "-", "progress_raw": "95%", "progress": 95, "status": "قيد التنفيذ", "notes": "مراحل تسليم نهائية", "last_updated": "2026-10"}];
-
-        // Accounts and Permissions Matrix
-        const accountsConfig = {
-            "eng_fadi": { name: "م. فادي محمود", role: "admin", region: "all", pass: "fadi@2026", title: "معد النظام والمسؤول التقني" },
-            "eng_head": { name: "مسؤول وحدة الهندسة والإنشاءات", role: "admin", region: "all", pass: "admin@eng2026", title: "إدارة عليا / مراقبة وتعديل" },
-            "bldg_dir": { name: "مدير الأبنية والمنشآت", role: "admin", region: "all", pass: "bldg@2026", title: "إدارة الأبنية / مراقبة وتعديل" },
-            "north_mgr": { name: "مسؤول منطقة الشمال", role: "region_editor", region: "منطقة الشمال", pass: "north@2026", title: "محرر منطقة الشمال" },
-            "center_mgr": { name: "مسؤول منطقة الوسط", role: "region_editor", region: "منطقة الوسط", pass: "center@2026", title: "محرر منطقة الوسط" },
-            "south_mgr": { name: "مسؤول منطقة الجنوب", role: "region_editor", region: "منطقة الجنوب", pass: "south@2026", title: "محرر منطقة الجنوب" }
-        };
-
-        // ==========================================
-        // إعدادات Google Firebase Realtime Database
-        // ==========================================
-        const firebaseConfig = {
-            databaseURL: "https://fadiaziza-d8fcd-default-rtdb.firebaseio.com"
-        };
-
-        let db = null;
-        let isFirebaseConnected = false;
-
-        try {
-            if (firebaseConfig.databaseURL && !firebaseConfig.databaseURL.includes("your-project-id")) {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-                isFirebaseConnected = true;
-            }
-        } catch (e) {
-            console.warn("Firebase initialization skipped or failed, using local fallback:", e);
-        }
-
-        // State
-        let currentUser = null;
-        let projects = JSON.parse(localStorage.getItem('moh_projects_2026')) || rawProjectsData;
-
-        // Sync with Firebase in real time
-        function setupFirebaseSync() {
-            const syncBadge = document.getElementById('syncBadge');
-            const syncText = document.getElementById('syncText');
-
-            if (!db) {
-                if (syncBadge) {
-                    syncBadge.style.background = "rgba(245, 158, 11, 0.2)";
-                    syncBadge.style.borderColor = "#f59e0b";
-                    syncBadge.style.color = "#fbbf24";
-                    syncText.textContent = "تخزين محلي";
-                }
-                return;
-            }
-
-            const projectsRef = db.ref('moh_projects_2026');
-
-            // Listen for any remote updates live
-            projectsRef.on('value', (snapshot) => {
-                const data = snapshot.val();
-                if (data && Array.isArray(data) && data.length > 0) {
-                    projects = data;
-                    localStorage.setItem('moh_projects_2026', JSON.stringify(projects));
-                    renderStats();
-                    renderTable();
-                    updateCharts();
-                    if (syncText) syncText.textContent = "متصل لحظياً (Firebase Live)";
-                } else {
-                    // Seed initial 105 projects if database is empty
-                    projectsRef.set(rawProjectsData);
-                }
-            }, (error) => {
-                console.error("Firebase read error:", error);
-                if (syncBadge) {
-                    syncBadge.style.background = "rgba(239, 68, 68, 0.2)";
-                    syncBadge.style.borderColor = "#ef4444";
-                    syncBadge.style.color = "#f87171";
-                    syncText.textContent = "غير متصل (تحقق من الصلاحيات)";
-                }
-            });
-        }
-
-        // Initialize Charts
-        let govChart = null;
-        let statusChart = null;
-
-        function initApp() {
-            populateDonorFilter();
-            renderStats();
-            renderTable();
-            initCharts();
-            checkSession();
-            setupFirebaseSync();
-        }
-
-        function updateCharts() {
-            if (!statusChart || !govChart) return;
-            const completed = projects.filter(p => p.progress === 100).length;
-            const stopped = projects.filter(p => p.status === 'متوقف').length;
-            const ongoing = projects.length - completed - stopped;
-            statusChart.data.datasets[0].data = [completed, ongoing, stopped];
-            statusChart.update();
-        }
-
-        function checkSession() {
-            const saved = sessionStorage.getItem('moh_active_user');
-            if (saved && accountsConfig[saved]) {
-                currentUser = accountsConfig[saved];
-                currentUser.key = saved;
-                updateUserUI();
-            }
-        }
-
-        function populateDonorFilter() {
-            const donorSet = new Set(projects.map(p => p.donor));
-            const select = document.getElementById('donorFilter');
-            donorSet.forEach(d => {
-                const opt = document.createElement('option');
-                opt.value = d;
-                opt.textContent = d;
-                select.appendChild(opt);
-            });
-        }
-
-        function renderStats() {
-            const total = projects.length;
-            const completed = projects.filter(p => p.progress === 100 || p.status === 'مكتمل').length;
-            const stopped = projects.filter(p => p.status === 'متوقف').length;
-            const ongoing = total - completed - stopped;
-
-            document.getElementById('statTotal').textContent = total;
-            document.getElementById('statCompleted').textContent = completed;
-            document.getElementById('statOngoing').textContent = ongoing;
-            document.getElementById('statStopped').textContent = stopped;
-        }
-
-        function initCharts() {
-            // Status Chart
-            const completed = projects.filter(p => p.progress === 100).length;
-            const stopped = projects.filter(p => p.status === 'متوقف').length;
-            const ongoing = projects.length - completed - stopped;
-
-            const ctxStatus = document.getElementById('statusChart').getContext('2d');
-            statusChart = new Chart(ctxStatus, {
-                type: 'doughnut',
-                data: {
-                    labels: ['منجز 2026', 'قيد العمل', 'متوقف مؤقتاً'],
-                    datasets: [{
-                        data: [completed, ongoing, stopped],
-                        backgroundColor: ['#10b981', '#0284c7', '#ef4444'],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom', labels: { font: { family: 'Cairo' } } }
-                    }
-                }
-            });
-
-            // Governorate Chart
-            const govs = {};
-            projects.forEach(p => {
-                govs[p.governorate] = (govs[p.governorate] || 0) + 1;
-            });
-
-            const ctxGov = document.getElementById('govChart').getContext('2d');
-            govChart = new Chart(ctxGov, {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(govs),
-                    datasets: [{
-                        label: 'عدد المشاريع',
-                        data: Object.values(govs),
-                        backgroundColor: '#1e3a8a',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById('projectsTbody');
-            tbody.innerHTML = '';
-
-            const regionVal = document.getElementById('regionFilter').value;
-            const donorVal = document.getElementById('donorFilter').value;
-            const statusVal = document.getElementById('statusFilter').value;
-            const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
-
-            const filtered = projects.filter(p => {
-                const matchRegion = (regionVal === 'الكل' || p.region === regionVal);
-                const matchDonor = (donorVal === 'الكل' || p.donor === donorVal);
-                const matchStatus = (statusVal === 'الكل' || p.status === statusVal || (statusVal === 'مكتمل' && p.progress === 100));
-                const matchSearch = (!searchVal || p.name.toLowerCase().includes(searchVal) || p.governorate.toLowerCase().includes(searchVal));
-                return matchRegion && matchDonor && matchStatus && matchSearch;
-            });
-
-            filtered.forEach(p => {
-                const tr = document.createElement('tr');
-                
-                let fillColor = '#0284c7';
-                let statusBadge = '<span class="badge-status status-ongoing">قيد التنفيذ</span>';
-                if (p.progress === 100) {
-                    fillColor = '#10b981';
-                    statusBadge = '<span class="badge-status status-completed">منجز 2026</span>';
-                } else if (p.status === 'متوقف') {
-                    fillColor = '#ef4444';
-                    statusBadge = '<span class="badge-status status-stopped">متوقف</span>';
-                }
-
-                const canEdit = currentUser && (currentUser.role === 'admin' || currentUser.region === p.region);
-
-                tr.innerHTML = `
-                    <td style="text-align: center; font-weight: bold; color: #64748b;">${p.id}</td>
-                    <td style="font-weight: 600;">${p.name}</td>
-                    <td><span style="color: #64748b;">${p.region}</span> - <strong>${p.governorate}</strong></td>
-                    <td style="font-size: 0.8rem; color: #334155;">${p.donor}</td>
-                    <td style="text-align: center; font-weight: 600;">${p.budget}</td>
-                    <td>
-                        <div class="prog-container">
-                            <span style="font-weight: 700; width: 36px; text-align: left;">${p.progress}%</span>
-                            <div class="prog-bar">
-                                <div class="prog-fill" style="width: ${p.progress}%; background: ${fillColor};"></div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>${statusBadge}</td>
-                    <td style="font-size: 0.82rem; color: #475569;">${p.notes}</td>
-                    <td style="text-align: center;">
-                        <button class="btn btn-primary" style="padding: 4px 8px; font-size: 0.75rem; ${canEdit ? '' : 'opacity: 0.4; cursor: not-allowed;'}" 
-                            onclick="${canEdit ? `openEditModal(${p.id})` : `showToast('عفواً، يتطلب تعديل هذا المشروع تسجيل الدخول بحساب مسؤول المنطقة أو الإدارة')`}">
-                            <i class="fa-solid fa-pen"></i> تعديل
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function applyFilters() {
-            renderTable();
-        }
-
-        function openLoginModal() {
-            document.getElementById('loginModal').classList.add('active');
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
-        }
-
-        function handleLogin() {
-            const key = document.getElementById('userSelect').value;
-            const pass = document.getElementById('passwordInput').value.trim();
-            const acc = accountsConfig[key];
-
-            if (acc && acc.pass === pass) {
-                currentUser = acc;
-                currentUser.key = key;
-                sessionStorage.setItem('moh_active_user', key);
-                closeLoginModal();
-                updateUserUI();
-                renderTable();
-                showToast(`أهلاً بك، ${currentUser.name} (${currentUser.title})`);
-            } else {
-                alert('كلمة المرور غير صحيحة، يرجى التأكد وإعادة المحاولة.');
-            }
-        }
-
-        function updateUserUI() {
-            if (currentUser) {
-                document.getElementById('userName').textContent = `${currentUser.name} (${currentUser.title})`;
-                document.getElementById('authBtn').innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> خروج';
-                document.getElementById('authBtn').classList.remove('btn-light');
-                document.getElementById('authBtn').classList.add('btn-danger');
-                document.getElementById('authBtn').onclick = handleLogout;
-                document.getElementById('editPermissionNote').innerHTML = `<span style="color: #10b981; font-weight: bold;"><i class="fa-solid fa-check"></i> لديك صلاحية التعديل على: ${currentUser.region === 'all' ? 'كافة المناطق' : currentUser.region}</span>`;
-            } else {
-                document.getElementById('userName').textContent = 'زائر (عرض فقط)';
-                document.getElementById('authBtn').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
-                document.getElementById('authBtn').classList.remove('btn-danger');
-                document.getElementById('authBtn').classList.add('btn-light');
-                document.getElementById('authBtn').onclick = openLoginModal;
-                document.getElementById('editPermissionNote').textContent = 'سجل دخولك لتعديل نسبة الإنجاز والملاحظات';
-            }
-        }
-
-        function handleLogout() {
-            currentUser = null;
-            sessionStorage.removeItem('moh_active_user');
-            updateUserUI();
-            renderTable();
-            showToast('تم تسجيل الخروج بنجاح');
-        }
-
-        function openEditModal(projId) {
-            const proj = projects.find(p => p.id === projId);
-            if (!proj) return;
-
-            document.getElementById('editProjId').value = proj.id;
-            document.getElementById('editProjName').textContent = proj.name + ` (${proj.region} - ${proj.governorate})`;
-            document.getElementById('editProgRange').value = proj.progress;
-            document.getElementById('editProgInput').value = proj.progress;
-            document.getElementById('editNotes').value = proj.notes;
-
-            document.getElementById('editModal').classList.add('active');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editModal').classList.remove('active');
-        }
-
-        function saveProjectUpdate() {
-            const id = parseInt(document.getElementById('editProjId').value);
-            const newProg = parseInt(document.getElementById('editProgInput').value);
-            const newNotes = document.getElementById('editNotes').value.trim();
-
-            const idx = projects.findIndex(p => p.id === id);
-            if (idx !== -1) {
-                projects[idx].progress = newProg;
-                projects[idx].notes = newNotes;
-                if (newProg === 100) {
-                    projects[idx].status = 'مكتمل';
-                } else if (newNotes.includes('متوقف') || newNotes.includes('توقف')) {
-                    projects[idx].status = 'متوقف';
-                } else {
-                    projects[idx].status = 'قيد التنفيذ';
-                }
-                projects[idx].last_updated = new Date().toISOString().slice(0, 7);
-
-                // Save to localStorage immediately
-                localStorage.setItem('moh_projects_2026', JSON.stringify(projects));
-
-                // Push to Firebase Realtime Database
-                if (db) {
-                    db.ref('moh_projects_2026/' + idx).update({
-                        progress: newProg,
-                        notes: newNotes,
-                        status: projects[idx].status,
-                        last_updated: projects[idx].last_updated
-                    }).then(() => {
-                        console.log("Firebase synced successfully");
-                    }).catch((err) => {
-                        console.warn("Firebase update failed, saved locally:", err);
-                    });
-                }
-
-                closeEditModal();
-                renderStats();
-                renderTable();
-                updateCharts();
-                showToast(`تم تحديث بيانات المشروع رقم ${id} وبثها لجميع المسؤولين لحظياً.`);
-            }
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').textContent = msg;
-            toast.style.display = 'flex';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3500);
-        }
-
-        function exportDataToExcel() {
-            window.location.href = 'سجل_مشاريع_الصحة_2026_حصريا.xlsx';
-        }
-
-        window.onload = initApp;
-    </script>
-</body>
-</html>
